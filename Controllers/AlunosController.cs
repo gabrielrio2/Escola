@@ -19,9 +19,17 @@ namespace EscolaProjeto.Controllers
         }
 
         // GET: Alunos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SeachString)
         {
-            return View(await _context.Alunos.ToListAsync());
+            //return View(await _context.escolas.ToListAsync());
+            ViewData["CurrentFilter"] = SeachString;
+            var alunos = from b in _context.Alunos
+                          select b;
+            if (!String.IsNullOrEmpty(SeachString))
+            {
+                alunos = alunos.Where(b => b.Name.Contains(SeachString));
+            }
+            return View(alunos);
         }
 
         // GET: Alunos/Details/5

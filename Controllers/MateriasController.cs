@@ -19,9 +19,17 @@ namespace EscolaProjeto.Controllers
         }
 
         // GET: Materias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SeachString)
         {
-            return View(await _context.materias.ToListAsync());
+            //return View(await _context.escolas.ToListAsync());
+            ViewData["CurrentFilter"] = SeachString;
+            var materias = from b in _context.materias
+                          select b;
+            if (!String.IsNullOrEmpty(SeachString))
+            {
+                materias = materias.Where(b => b.Name.Contains(SeachString));
+            }
+            return View(materias);
         }
 
         // GET: Materias/Details/5

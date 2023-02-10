@@ -6,8 +6,39 @@
     <title>@ViewData["Title"] - EscolaProjeto</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,600;1,200;1,400;1,600&display=swap"
+          rel="stylesheet" />
 </head>
+
 <body>
+    <style>
+        .card {
+    border-radius: 10px;
+    box-shadow: 7px 7px 13px 0px rgba(50, 50, 50, 0.22);
+    padding: 30px;
+    margin: 20px;
+    width: 400px;
+    transition: all 0.3s ease-out;
+        }
+
+    .card:hover {
+        transform: translateY(-5px);
+        cursor: pointer;
+    }
+
+    .card p {
+        color: azure;
+        font-size: 16px;
+    }
+
+        .image {
+            float: right;
+            max-width: 64px;
+            max-height: 64px;
+        }
+
+}
+        </style>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -40,6 +71,32 @@
                 </div>
             </div>
         </nav>
+        <div class="row" style="display:flex; align-items:center; justify-content:center;">
+            <div class="card ">
+               <a asp-area="" asp-controller="Alunos" asp-action="Index">Alunos
+                    <h2>Cadastro de escola</h2>
+                </a>
+            </div>
+
+            <div class="card">
+                <a  asp-area="" asp-controller="Escolas" asp-action="Index">Escolas
+                <h2>Cadastro de Escolas</h2>
+                
+                </a>
+            </div>
+
+            <div class="card">
+                <a  asp-area="" asp-controller="Materias" asp-action="Index">Materias
+                <h2>Cadastro de Disiplinas</h2>            
+                </a>
+            </div>  
+            <div class="card ">
+                <a  asp-area="" asp-controller="Turmas" asp-action="Index">Turmas
+                <h2>Cadastro de Turmas</h2>
+                               </a>
+
+            </div>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

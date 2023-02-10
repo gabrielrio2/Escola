@@ -19,9 +19,17 @@ namespace EscolaProjeto.Controllers
         }
 
         // GET: Turmas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SeachString)
         {
-            return View(await _context.turmas.ToListAsync());
+            //return View(await _context.escolas.ToListAsync());
+            ViewData["CurrentFilter"] = SeachString;
+            var turmas = from b in _context.turmas
+                         select b;
+            if (!String.IsNullOrEmpty(SeachString))
+            {
+                turmas = turmas.Where(b => b.Numero.Contains(SeachString));
+            }
+            return View(turmas);
         }
 
         // GET: Turmas/Details/5
