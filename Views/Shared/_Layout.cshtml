@@ -8,96 +8,124 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,600;1,200;1,400;1,600&display=swap"
           rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  
 </head>
-
-<body>
-    <style>
-        .card {
-    border-radius: 10px;
-    box-shadow: 7px 7px 13px 0px rgba(50, 50, 50, 0.22);
-    padding: 30px;
-    margin: 20px;
-    width: 400px;
-    transition: all 0.3s ease-out;
-        }
-
-    .card:hover {
-        transform: translateY(-5px);
-        cursor: pointer;
-    }
-
-    .card p {
-        color: azure;
-        font-size: 16px;
-    }
-
-        .image {
-            float: right;
-            max-width: 64px;
-            max-height: 64px;
-        }
-
+<style>
+    
+*{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
 }
-        </style>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EscolaProjeto</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Alunos" asp-action="Index">Alunos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Escolas" asp-action="Index">Escolas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Materias" asp-action="Index">Materias</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Turmas" asp-action="Index">Turmas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="row" style="display:flex; align-items:center; justify-content:center;">
-            <div class="card ">
-               <a asp-area="" asp-controller="Alunos" asp-action="Index">Alunos
-                    <h2>Cadastro de escola</h2>
-                </a>
-            </div>
-
-            <div class="card">
-                <a  asp-area="" asp-controller="Escolas" asp-action="Index">Escolas
-                <h2>Cadastro de Escolas</h2>
-                
-                </a>
-            </div>
-
-            <div class="card">
-                <a  asp-area="" asp-controller="Materias" asp-action="Index">Materias
-                <h2>Cadastro de Disiplinas</h2>            
-                </a>
-            </div>  
-            <div class="card ">
-                <a  asp-area="" asp-controller="Turmas" asp-action="Index">Turmas
-                <h2>Cadastro de Turmas</h2>
-                               </a>
-
-            </div>
-        </div>
-    </header>
+body {
+  font-family: 'Roboto', sans-serif;
+}
+.sidebar {
+  position: fixed;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: #042331;
+  transition: all .5s ease;
+}
+.sidebar header {
+  font-size: 22px;
+  color: white;
+  line-height: 70px;
+  text-align: center;
+  background: #063146;
+  user-select: none;
+}
+.sidebar ul a{
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 65px;
+  font-size: 20px;
+  color: white;
+  padding-left: 40px;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+  border-top: 1px solid rgba(255,255,255,.1);
+  transition: .4s;
+}
+ul li:hover a{
+  padding-left: 50px;
+}
+.sidebar ul a i{
+  margin-right: 16px;
+}
+#check{
+  display: none;
+}
+label #btn,label #cancel{
+  position: absolute;
+  background: #042331;
+  border-radius: 3px;
+  cursor: pointer;
+}
+label #btn{
+  left: 40px;
+  top: 25px;
+  font-size: 35px;
+  color: white;
+  padding: 6px 12px;
+  transition: all .5s;
+}
+label #cancel{
+  z-index: 1111;
+  left: -195px;
+  top: 17px;
+  font-size: 30px;
+  color: #0a5275;
+  padding: 4px 9px;
+  transition: all .5s ease;
+}
+#check:checked ~ .sidebar{
+  left: 0;
+}
+#check:checked ~ label #btn{
+  left: 250px;
+  opacity: 0;
+  pointer-events: none;
+}
+#check:checked ~ label #cancel{
+  left: 195px;
+}
+#check:checked ~ section{
+  margin-left: 250px;
+}
+section{
+  background: url(bg.jpeg) no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  transition: all .5s;
+}
+</style>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <i class="fas fa-bars" id="btn"></i>
+      <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <div class="sidebar">
+    <header>My App</header>
+    <ul>
+     <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-qrcode"></i>Home</a></li>
+            <li><a asp-area="" asp-controller="Escolas" asp-action="Index"><i class="fas fa-link"></i>Escola</a></li>
+            <li><a asp-area="" asp-controller="Materias" asp-action="Index"><i class="fas fa-stream"></i>Materia</a></li>
+            <li><a asp-area="" asp-controller="Turmas" asp-action="Index"><i class="fas fa-calendar-week"></i>Turmas</a></li>
+            <li><a asp-area="" asp-controller="Alunos" asp-action="Index"><i class="far fa-question-circle"></i>Alunos</a></li>
+     <li><a href="#"><i class="fas fa-sliders-h"></i>Services</a></li>
+     <li><a href="#"><i class="far fa-envelope"></i>Contact</a></li>
+    </ul>
+   </div>
+   <section></section>
+    
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

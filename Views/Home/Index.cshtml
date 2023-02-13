@@ -3,6 +3,63 @@
 }
 
 <div class="text-center">
-   
+    <style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 7px 7px 13px 0px rgba(50, 50, 50, 0.22);
+            padding: 30px;
+            margin: 20px;
+            width: 400px;
+            transition: all 0.3s ease-out;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                cursor: pointer;
+            }
+
+            .card p {
+                color: azure;
+                font-size: 16px;
+            }
+
+        .image {
+            float: right;
+            max-width: 64px;
+            max-height: 64px;
+        }
+
+        }
+    </style>
+    <div class="row" style="display:flex; align-items:center; justify-content:center;">
+        <div class="card ">
+            <a asp-area="" asp-controller="Alunos" asp-action="Index">
+                Alunos
+                <h3>Cadastro de escola</h3>
+            </a>
+        </div>
+
+        <div class="card">
+            <a asp-area="" asp-controller="Escolas" asp-action="Index">
+                Escolas
+                <h3>Cadastro de Escolas</h3>
+
+            </a>
+        </div>
+
+        <div class="card">
+            <a asp-area="" asp-controller="Materias" asp-action="Index">
+                Materias
+                <h3>Cadastro de Disiplinas</h3>
+            </a>
+        </div>
+        <div class="card ">
+            <a asp-area="" asp-controller="Turmas" asp-action="Index">
+                Turmas
+                <h3>Cadastro de Turmas</h3>
+            </a>
+
+        </div>
+    </div>
    
 </div>
