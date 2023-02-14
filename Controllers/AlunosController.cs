@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EscolaProjeto.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EscolaProjeto.Controllers
 {
@@ -22,6 +23,7 @@ namespace EscolaProjeto.Controllers
         public async Task<IActionResult> Index(string SeachString)
         {
             //return View(await _context.escolas.ToListAsync());
+            
             ViewData["CurrentFilter"] = SeachString;
             var alunos = from b in _context.Alunos
                           select b;
@@ -29,8 +31,10 @@ namespace EscolaProjeto.Controllers
             {
                 alunos = alunos.Where(b => b.Name.Contains(SeachString));
             }
+            
             return View(alunos);
         }
+       
 
         // GET: Alunos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -47,7 +51,13 @@ namespace EscolaProjeto.Controllers
                 return NotFound();
             }
 
+
             return View(aluno);
+        }
+        public async Task<IActionResult> Lista()
+        {
+            ViewBag.ListAluno = new Aluno().getAll();
+            return View();
         }
 
         // GET: Alunos/Create
@@ -55,6 +65,7 @@ namespace EscolaProjeto.Controllers
         {
             return View();
         }
+
 
         // POST: Alunos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

@@ -31,6 +31,7 @@ namespace EscolaProjeto.Controllers
             }
             return View(escolas);
         }
+       
 
         // GET: Escolas/Details/5
         public async Task<IActionResult> Details(int? id)
