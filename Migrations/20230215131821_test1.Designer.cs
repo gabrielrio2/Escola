@@ -4,14 +4,16 @@ using EscolaProjeto.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EscolaProjeto.Migrations
 {
     [DbContext(typeof(BancoDeDados))]
-    partial class BancoDeDadosModelSnapshot : ModelSnapshot
+    [Migration("20230215131821_test1")]
+    partial class test1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,18 +34,18 @@ namespace EscolaProjeto.Migrations
                     b.Property<DateTime>("DataDeNascimento")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EscolaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Matricula")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("escolaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("escolaId");
+                    b.HasIndex("EscolaId");
 
                     b.ToTable("Alunos");
                 });
@@ -58,8 +60,8 @@ namespace EscolaProjeto.Migrations
                     b.Property<int?>("AlunoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Cnpj")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Cnpj")
+                        .HasColumnType("int");
 
                     b.Property<string>("Endereço")
                         .HasColumnType("nvarchar(max)");
@@ -111,7 +113,9 @@ namespace EscolaProjeto.Migrations
                 {
                     b.HasOne("EscolaProjeto.Models.Escola", "escola")
                         .WithMany()
-                        .HasForeignKey("escolaId");
+                        .HasForeignKey("EscolaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("escola");
                 });

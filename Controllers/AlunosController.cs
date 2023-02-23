@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EscolaProjeto.Models;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EscolaProjeto.Controllers
 {
@@ -18,23 +17,26 @@ namespace EscolaProjeto.Controllers
         {
             _context = context;
         }
-
+         
         // GET: Alunos
         public async Task<IActionResult> Index(string SeachString)
         {
-            //return View(await _context.escolas.ToListAsync());
-            
+            var bancoDeDados = _context.Alunos.Include(a => a.Escola);
+     
             ViewData["CurrentFilter"] = SeachString;
             var alunos = from b in _context.Alunos
-                          select b;
+                         select b;
             if (!String.IsNullOrEmpty(SeachString))
             {
                 alunos = alunos.Where(b => b.Name.Contains(SeachString));
+                alunos = _context.Alunos.Include(c => c.Escola).AsNoTracking();
+                return View(alunos);
             }
-            
-            return View(alunos);
+           
+            return View(await bancoDeDados.ToListAsync());
+        
         }
-       
+
 
         // GET: Alunos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -45,34 +47,29 @@ namespace EscolaProjeto.Controllers
             }
 
             var aluno = await _context.Alunos
+                .Include(a => a.Escola)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {
                 return NotFound();
             }
 
-
             return View(aluno);
-        }
-        public async Task<IActionResult> Lista()
-        {
-            ViewBag.ListAluno = new Aluno().getAll();
-            return View();
         }
 
         // GET: Alunos/Create
         public IActionResult Create()
         {
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome");
             return View();
         }
-
 
         // POST: Alunos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Matricula,Name,Cpf,DataDeNascimento")] Aluno aluno)
+        public async Task<IActionResult> Create([Bind("Id,Matricula,Name,Cpf,EscolaId,DataDeNascimento")] Aluno aluno)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +77,8 @@ namespace EscolaProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(aluno);
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
+            return View();
         }
 
         // GET: Alunos/Edit/5
@@ -96,6 +94,8 @@ namespace EscolaProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
+
             return View(aluno);
         }
 
@@ -104,7 +104,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Name,Cpf,DataDeNascimento")] Aluno aluno)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Name,Cpf,EscolaId,DataDeNascimento")] Aluno aluno)
         {
             if (id != aluno.Id)
             {
@@ -131,6 +131,7 @@ namespace EscolaProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
             return View(aluno);
         }
 
@@ -143,6 +144,7 @@ namespace EscolaProjeto.Controllers
             }
 
             var aluno = await _context.Alunos
+                .Include(a => a.Escola)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {

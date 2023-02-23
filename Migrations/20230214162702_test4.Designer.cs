@@ -4,14 +4,16 @@ using EscolaProjeto.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EscolaProjeto.Migrations
 {
     [DbContext(typeof(BancoDeDados))]
-    partial class BancoDeDadosModelSnapshot : ModelSnapshot
+    [Migration("20230214162702_test4")]
+    partial class test4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,8 +60,8 @@ namespace EscolaProjeto.Migrations
                     b.Property<int?>("AlunoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Cnpj")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Cnpj")
+                        .HasColumnType("int");
 
                     b.Property<string>("Endereço")
                         .HasColumnType("nvarchar(max)");

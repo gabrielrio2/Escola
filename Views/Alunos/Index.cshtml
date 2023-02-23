@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<EscolaProjeto.Models.Aluno>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Alunos";
 }
 
 <h1>Index</h1>
@@ -27,8 +27,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Cpf)
             </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.DataDeNascimento)
+            </th>
+              <th>
+                Nome Escola
             </th>
             <th></th>
         </tr>
@@ -45,9 +49,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Cpf)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.DataDeNascimento)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Escola.Nome)
+                </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
