@@ -29,10 +29,9 @@ namespace EscolaProjeto.Controllers
             if (!String.IsNullOrEmpty(SeachString))
             {
                 alunos = alunos.Where(b => b.Name.Contains(SeachString));
-                alunos = _context.Alunos.Include(c => c.Escola).AsNoTracking();
                 return View(alunos);
             }
-           
+            alunos=_context.Alunos.Include(c=>c.Escola).AsNoTracking();
             return View(await bancoDeDados.ToListAsync());
         
         }

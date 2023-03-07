@@ -19,17 +19,13 @@ namespace EscolaProjeto.Controllers
         }
 
         // GET: Turmas
-        public async Task<IActionResult> Index(string SeachString)
+        public async Task<IActionResult> Index()
         {
-            //return View(await _context.escolas.ToListAsync());
-            ViewData["CurrentFilter"] = SeachString;
-            var turmas = from b in _context.turmas
-                         select b;
-            if (!String.IsNullOrEmpty(SeachString))
-            {
-                turmas = turmas.Where(b => b.Numero.Contains(SeachString));
-            }
-            return View(turmas);
+            var bancoDeDados = _context.turmas.Include(t => t.Escola);
+            var turmas = from c in _context.turmas
+                         select c;
+            turmas = _context.turmas.Include(c => c.Escola).AsNoTracking();
+            return View(await bancoDeDados.ToListAsync());
         }
 
         // GET: Turmas/Details/5
@@ -41,6 +37,7 @@ namespace EscolaProjeto.Controllers
             }
 
             var turma = await _context.turmas
+                .Include(t => t.Escola)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turma == null)
             {
@@ -53,6 +50,7 @@ namespace EscolaProjeto.Controllers
         // GET: Turmas/Create
         public IActionResult Create()
         {
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome");
             return View();
         }
 
@@ -61,7 +59,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Numero")] Turma turma)
+        public async Task<IActionResult> Create([Bind("Id,Numero,EscolaId")] Turma turma)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +67,7 @@ namespace EscolaProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
             return View(turma);
         }
 
@@ -85,6 +84,7 @@ namespace EscolaProjeto.Controllers
             {
                 return NotFound();
             }
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
             return View(turma);
         }
 
@@ -93,7 +93,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Numero")] Turma turma)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Numero,EscolaId")] Turma turma)
         {
             if (id != turma.Id)
             {
@@ -120,6 +120,7 @@ namespace EscolaProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
             return View(turma);
         }
 
@@ -132,6 +133,7 @@ namespace EscolaProjeto.Controllers
             }
 
             var turma = await _context.turmas
+                .Include(t => t.Escola)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turma == null)
             {

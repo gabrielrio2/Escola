@@ -19,6 +19,11 @@
                 <span asp-validation-for="Numero" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EscolaId" class="control-label"></label>
+                <select asp-for="EscolaId" class="form-control" asp-items="ViewBag.EscolaId"></select>
+                <span asp-validation-for="EscolaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
