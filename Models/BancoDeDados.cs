@@ -12,7 +12,7 @@ namespace EscolaProjeto.Models
         public DbSet<Turma> turmas { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString: @"server=(localdb)\mssqllocaldb;Database=Projeto4;Integrated Security=True");
+            optionsBuilder.UseSqlServer(connectionString: @"server=(localdb)\mssqllocaldb;Database=Projeto8;Integrated Security=True");
         } 
        
 

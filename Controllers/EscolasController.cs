@@ -29,7 +29,10 @@ namespace EscolaProjeto.Controllers
             {
                escolas=escolas.Where(b=>b.Nome.Contains(SeachString));
             }
+            int quantidade = _context.escolas.Count();
+            ViewBag.Quantidade = quantidade;
             return View(escolas);
+
         }
        
 

@@ -12,16 +12,22 @@ namespace EscolaProjeto.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage ="O Campo é obrigatorio")]
         public  string  Matricula { get; set; }
+
+        [Required(ErrorMessage = "O Campo é obrigatorio")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "O Campo é obrigatorio")]
         public string Cpf { get; set; }
           
-        public int EscolaId { get; set; }
+        public int TurmaId { get; set; }
         
-        public Escola Escola { get; set; }
+        public Turma Turma { get; set; }
 
-        public List<Escola> listaEscola { get; set; }
+        public IEnumerable<Turma> listaTurma { get; set; }
 
+        
 
         [DataType(DataType.Date)]
         public DateTime DataDeNascimento { get; set; }

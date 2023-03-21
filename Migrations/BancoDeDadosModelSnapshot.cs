@@ -27,23 +27,26 @@ namespace EscolaProjeto.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Cpf")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataDeNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EscolaId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Matricula")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TurmaId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EscolaId");
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("Alunos");
                 });
@@ -55,24 +58,22 @@ namespace EscolaProjeto.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AlunoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cnpj")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Endereço")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TurmaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlunoId");
 
                     b.HasIndex("TurmaId");
 
@@ -87,12 +88,19 @@ namespace EscolaProjeto.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Professor")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TurmaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TurmaId");
 
                     b.ToTable("materias");
                 });
@@ -104,60 +112,88 @@ namespace EscolaProjeto.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AlunoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EscolaId")
                         .HasColumnType("int");
 
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Numero")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AlunoId");
+
                     b.HasIndex("EscolaId");
+
+                    b.HasIndex("MateriaId");
 
                     b.ToTable("turmas");
                 });
 
             modelBuilder.Entity("EscolaProjeto.Models.Aluno", b =>
                 {
-                    b.HasOne("EscolaProjeto.Models.Escola", "Escola")
+                    b.HasOne("EscolaProjeto.Models.Turma", "Turma")
                         .WithMany()
-                        .HasForeignKey("EscolaId")
+                        .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Escola");
+                    b.Navigation("Turma");
                 });
 
             modelBuilder.Entity("EscolaProjeto.Models.Escola", b =>
                 {
-                    b.HasOne("EscolaProjeto.Models.Aluno", null)
-                        .WithMany("listaEscola")
-                        .HasForeignKey("AlunoId");
-
                     b.HasOne("EscolaProjeto.Models.Turma", null)
                         .WithMany("listaEscola")
                         .HasForeignKey("TurmaId");
                 });
 
+            modelBuilder.Entity("EscolaProjeto.Models.Materia", b =>
+                {
+                    b.HasOne("EscolaProjeto.Models.Turma", null)
+                        .WithMany("listaMateria")
+                        .HasForeignKey("TurmaId");
+                });
+
             modelBuilder.Entity("EscolaProjeto.Models.Turma", b =>
                 {
+                    b.HasOne("EscolaProjeto.Models.Aluno", null)
+                        .WithMany("listaTurma")
+                        .HasForeignKey("AlunoId");
+
                     b.HasOne("EscolaProjeto.Models.Escola", "Escola")
                         .WithMany()
                         .HasForeignKey("EscolaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EscolaProjeto.Models.Materia", "Materia")
+                        .WithMany()
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Escola");
+
+                    b.Navigation("Materia");
                 });
 
             modelBuilder.Entity("EscolaProjeto.Models.Aluno", b =>
                 {
-                    b.Navigation("listaEscola");
+                    b.Navigation("listaTurma");
                 });
 
             modelBuilder.Entity("EscolaProjeto.Models.Turma", b =>
                 {
                     b.Navigation("listaEscola");
+
+                    b.Navigation("listaMateria");
                 });
 #pragma warning restore 612, 618
         }

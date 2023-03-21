@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EscolaProjeto.Models;
+using System.Text;
 
 namespace EscolaProjeto.Controllers
 {
@@ -21,15 +22,13 @@ namespace EscolaProjeto.Controllers
         // GET: Turmas
         public async Task<IActionResult> Index()
         {
-            var bancoDeDados = _context.turmas.Include(t => t.Escola);
-            var turmas = from c in _context.turmas
-                         select c;
-            turmas = _context.turmas.Include(c => c.Escola).AsNoTracking();
+            var bancoDeDados = _context.turmas.Include(t => t.Escola).Include(t => t.Materia);
             return View(await bancoDeDados.ToListAsync());
         }
+        
 
-        // GET: Turmas/Details/5
-        public async Task<IActionResult> Details(int? id)
+// GET: Turmas/Details/5
+public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -38,6 +37,7 @@ namespace EscolaProjeto.Controllers
 
             var turma = await _context.turmas
                 .Include(t => t.Escola)
+                .Include(t => t.Materia)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turma == null)
             {
@@ -51,6 +51,7 @@ namespace EscolaProjeto.Controllers
         public IActionResult Create()
         {
             ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome");
+            ViewData["MateriaId"] = new SelectList(_context.materias, "Id", "Name");
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Numero,EscolaId")] Turma turma)
+        public async Task<IActionResult> Create([Bind("Id,Numero,EscolaId,MateriaId")] Turma turma)
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +69,7 @@ namespace EscolaProjeto.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
+            ViewData["MateriaId"] = new SelectList(_context.materias, "Id", "Name", turma.MateriaId);
             return View(turma);
         }
 
@@ -85,6 +87,7 @@ namespace EscolaProjeto.Controllers
                 return NotFound();
             }
             ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
+            ViewData["MateriaId"] = new SelectList(_context.materias, "Id", "Name", turma.MateriaId);
             return View(turma);
         }
 
@@ -93,7 +96,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Numero,EscolaId")] Turma turma)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Numero,EscolaId,MateriaId")] Turma turma)
         {
             if (id != turma.Id)
             {
@@ -121,6 +124,7 @@ namespace EscolaProjeto.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", turma.EscolaId);
+            ViewData["MateriaId"] = new SelectList(_context.materias, "Id", "Name", turma.MateriaId);
             return View(turma);
         }
 
@@ -134,6 +138,7 @@ namespace EscolaProjeto.Controllers
 
             var turma = await _context.turmas
                 .Include(t => t.Escola)
+                .Include(t => t.Materia)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turma == null)
             {

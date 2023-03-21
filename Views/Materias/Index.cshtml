@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Existem @ViewBag.Quantidade de Materias cadastrados.</h2>
 <form asp-action="Index" method="get">
     <div class="form-group">
         <label for="SeachString">Procure aqui: </label>
@@ -13,13 +13,13 @@
     </div>
 </form>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary btn-lg">Cadastrar Nova Materia</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+               Materias
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Professor)
@@ -37,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Professor)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit"class="btn btn-outline-info" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" class="btn btn-outline-info" asp-route-id="@item.Id">Detalhes</a> |
+                    <a asp-action="Delete" class="btn btn-outline-info" asp-route-id="@item.Id">Deletar</a>
             </td>
         </tr>
 }

@@ -17,25 +17,28 @@ namespace EscolaProjeto.Controllers
         {
             _context = context;
         }
-         
+
         // GET: Alunos
         public async Task<IActionResult> Index(string SeachString)
         {
-            var bancoDeDados = _context.Alunos.Include(a => a.Escola);
-     
             ViewData["CurrentFilter"] = SeachString;
-            var alunos = from b in _context.Alunos
+            var bancoDeDados = _context.Alunos.Include(a => a.Turma).Include(m => m.Turma.Escola).Include(x=>x.Turma.Materia);
+            var alunos = from b in _context.Alunos.Include(c => c.Turma.Escola)
                          select b;
             if (!String.IsNullOrEmpty(SeachString))
             {
                 alunos = alunos.Where(b => b.Name.Contains(SeachString));
-                return View(alunos);
-            }
-            alunos=_context.Alunos.Include(c=>c.Escola).AsNoTracking();
-            return View(await bancoDeDados.ToListAsync());
-        
-        }
 
+                return View(await alunos.ToListAsync());
+                //return View();
+            }
+
+            int quantidade = _context.Alunos.Count();
+            ViewBag.Quantidade = quantidade;
+
+            //return View(await alunos.ToListAsync());
+            return View(await bancoDeDados.ToListAsync());
+        }
 
         // GET: Alunos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -46,7 +49,7 @@ namespace EscolaProjeto.Controllers
             }
 
             var aluno = await _context.Alunos
-                .Include(a => a.Escola)
+                .Include(a => a.Turma)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {
@@ -59,7 +62,7 @@ namespace EscolaProjeto.Controllers
         // GET: Alunos/Create
         public IActionResult Create()
         {
-            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome");
+            ViewData["TurmaId"] = new SelectList(_context.turmas, "Id", "Numero");
             return View();
         }
 
@@ -68,7 +71,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Matricula,Name,Cpf,EscolaId,DataDeNascimento")] Aluno aluno)
+        public async Task<IActionResult> Create([Bind("Id,Matricula,Name,Cpf,TurmaId,DataDeNascimento")] Aluno aluno)
         {
             if (ModelState.IsValid)
             {
@@ -76,8 +79,8 @@ namespace EscolaProjeto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
-            return View();
+            ViewData["TurmaId"] = new SelectList(_context.turmas, "Id", "Numero", aluno.TurmaId);
+            return View(aluno);
         }
 
         // GET: Alunos/Edit/5
@@ -93,8 +96,7 @@ namespace EscolaProjeto.Controllers
             {
                 return NotFound();
             }
-            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
-
+            ViewData["TurmaId"] = new SelectList(_context.turmas, "Id", "Numero", aluno.TurmaId);
             return View(aluno);
         }
 
@@ -103,7 +105,7 @@ namespace EscolaProjeto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Name,Cpf,EscolaId,DataDeNascimento")] Aluno aluno)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Name,Cpf,TurmaId,DataDeNascimento")] Aluno aluno)
         {
             if (id != aluno.Id)
             {
@@ -130,7 +132,7 @@ namespace EscolaProjeto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EscolaId"] = new SelectList(_context.escolas, "Id", "Nome", aluno.EscolaId);
+            ViewData["TurmaId"] = new SelectList(_context.turmas, "Id", "Numero", aluno.TurmaId);
             return View(aluno);
         }
 
@@ -143,7 +145,7 @@ namespace EscolaProjeto.Controllers
             }
 
             var aluno = await _context.Alunos
-                .Include(a => a.Escola)
+                .Include(a => a.Turma)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {

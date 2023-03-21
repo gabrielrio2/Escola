@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<EscolaProjeto.Models.Aluno>
 
 @{
-    ViewData["Title"] = "Alunos";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Existem @ViewBag.Quantidade de alunos cadastrados.</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-lg">Cadastrar novo Aluno</a>
+</p>
 <form asp-action="Index" method="get">
     <div class="form-group">
         <label for="SeachString">Procure aqui: </label>
@@ -12,9 +16,6 @@
         <input type="submit" value="Search" class="btn btn-primary" />
     </div>
 </form>
-<p>
-    <a asp-action="Create">Cadastrar Novo</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,17 +23,22 @@
                 @Html.DisplayNameFor(model => model.Matricula)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Nome do Aluno
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cpf)
+                CPF
             </th>
-            
+            <th>
+                Nome da Escola
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Turma)
+            </th>
+            <th>
+                Materias
+            </th>
             <th>
                 Data de Nascimento
-            </th>
-              <th>
-                Nome Escola
             </th>
             <th></th>
         </tr>
@@ -40,29 +46,33 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Matricula)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cpf)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.DataDeNascimento)
-            </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Escola.Nome)
+                    @Html.DisplayFor(modelItem => item.Matricula)
                 </td>
-                
-
-
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Turma.Escola.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Turma.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Turma.Materia.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDeNascimento)
+                </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                <td>
+                    <a asp-action="Edit" class="btn btn-outline-info" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" class="btn btn-outline-info" asp-route-id="@item.Id">Detalhes</a> |
+                    <a asp-action="Delete" class="btn btn-outline-info" asp-route-id="@item.Id">Deletar</a>
+                </td>
             </td>
         </tr>
 }

@@ -29,6 +29,8 @@ namespace EscolaProjeto.Controllers
             {
                 materias = materias.Where(b => b.Name.Contains(SeachString));
             }
+            int quantidade = _context.materias.Count();
+            ViewBag.Quantidade = quantidade;
             return View(materias);
         }
 
